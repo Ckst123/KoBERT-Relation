@@ -59,7 +59,7 @@ def eval(model, eval_dataloader, metric, device):
 def data_cleaning(model, device):
     model.eval()
     data = pd.read_csv('naver_news_space.csv')
-    data = data[['news_headline', 'article']].dropna().iloc[:100]
+    data = data[['news_headline', 'article']].dropna()
     def make_inference(text):
         with torch.no_grad():
             inp = tokenizer(text, truncation=True, return_tensors="pt")
