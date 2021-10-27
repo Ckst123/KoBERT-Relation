@@ -1,0 +1,6 @@
+torch==1.9.1
+transformers==4.11.0
+tensorboardX>=2.0
+datasets
+scikit-learn
+overrides
