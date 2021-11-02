@@ -58,7 +58,7 @@ def eval(model, eval_dataloader, metric, device):
     
 def data_cleaning(model, device):
     model.eval()
-    data = pd.read_csv('naver_news_space.csv')
+    data = pd.read_csv('re_naver_news_previous_disease_2021_10_28.csv')
     data = data[['news_headline', 'article']].dropna()
     def make_inference(text):
         with torch.no_grad():
@@ -69,7 +69,15 @@ def data_cleaning(model, device):
             predictions = torch.argmax(logits, dim=-1)
         return predictions[0].cpu().item()
     data['relation'] = data['news_headline'].map(make_inference)
-    data[data['relation']==1][['news_headline', 'article']].to_csv('clean_data.csv', index=False)
+    # data[data['relation']==1][['news_headline', 'article']].to_csv('clean_data.csv', index=False)
+    data = data[data['relation']==1][['news_headline', 'article']]
+    data = data.sample(frac=1).reset_index(drop=True)
+    num = len(data)
+    for i in range(0, num, 5000):
+        data_i = data[i:i+5000]
+        data_i.to_csv('clean_previous_data%d.csv' % (i // 5000), index=False)
+
+
         
 
 
